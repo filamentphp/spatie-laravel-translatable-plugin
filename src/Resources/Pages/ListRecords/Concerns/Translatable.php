@@ -39,6 +39,10 @@ trait Translatable
 
     protected function getActions(): array
     {
+        if (! config('filament-spatie-laravel-translatable-plugin.display_locale_switcher')) {
+            return parent::getActions();
+        }
+
         return array_merge(
             [$this->getActiveLocaleSelectAction()],
             parent::getActions(),
