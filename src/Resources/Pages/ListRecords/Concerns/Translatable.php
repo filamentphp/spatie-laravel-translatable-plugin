@@ -15,7 +15,7 @@ trait Translatable
     {
         static::authorizeResourceAccess();
 
-        $this->setActiveFormLocale();
+        $this->setActiveLocale();
     }
 
     public function getActiveTableLocale(): ?string
@@ -23,7 +23,7 @@ trait Translatable
         return $this->activeLocale;
     }
 
-    protected function setActiveFormLocale(): void
+    protected function setActiveLocale(): void
     {
         $this->activeLocale = static::getResource()::getDefaultTranslatableLocale();
     }
@@ -35,13 +35,5 @@ trait Translatable
         $this->records->transform(fn (Model $record) => $record->setLocale($this->activeLocale));
 
         return $this->records;
-    }
-
-    protected function getActions(): array
-    {
-        return array_merge(
-            [$this->getActiveLocaleSelectAction()],
-            parent::getActions(),
-        );
     }
 }

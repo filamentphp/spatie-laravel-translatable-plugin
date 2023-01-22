@@ -2,28 +2,28 @@
 
 namespace Filament\Resources\Pages\EditRecord\Concerns;
 
-use Filament\Resources\Pages\Concerns\HasActiveFormLocaleSwitcher;
+use Filament\Resources\Pages\Concerns\HasActiveLocaleSwitcher;
+use Filament\Resources\Pages\Concerns\HasTranslatableRecordTitle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 trait Translatable
 {
-    use HasActiveFormLocaleSwitcher;
-
-    public $activeFormLocale = null;
+    use HasActiveLocaleSwitcher;
+    use HasTranslatableRecordTitle;
 
     protected function fillForm(): void
     {
         $this->callHook('beforeFill');
 
-        if ($this->activeFormLocale === null) {
-            $this->setActiveFormLocale();
+        if ($this->activeLocale === null) {
+            $this->setActiveLocale();
         }
 
         $data = $this->record->attributesToArray();
 
         foreach (static::getResource()::getTranslatableAttributes() as $attribute) {
-            $data[$attribute] = $this->record->getTranslation($attribute, $this->activeFormLocale);
+            $data[$attribute] = $this->record->getTranslation($attribute, $this->activeLocale);
         }
 
         $data = $this->mutateFormDataBeforeFill($data);
@@ -33,7 +33,7 @@ trait Translatable
         $this->callHook('afterFill');
     }
 
-    protected function setActiveFormLocale(): void
+    protected function setActiveLocale(): void
     {
         $resource = static::getResource();
 
@@ -41,8 +41,8 @@ trait Translatable
         $resourceLocales = $this->getTranslatableLocales();
         $defaultLocale = $resource::getDefaultTranslatableLocale();
 
-        $this->activeLocale = $this->activeFormLocale = in_array($defaultLocale, $availableLocales) ? $defaultLocale : array_intersect($availableLocales, $resourceLocales)[0] ?? $defaultLocale;
-        $this->record->setLocale($this->activeFormLocale);
+        $this->activeLocale = in_array($defaultLocale, $availableLocales) ? $defaultLocale : array_intersect($availableLocales, $resourceLocales)[0] ?? $defaultLocale;
+        $this->record->setLocale($this->activeLocale);
     }
 
     protected function handleRecordUpdate(Model $record, array $data): Model
@@ -50,7 +50,7 @@ trait Translatable
         $record->fill(Arr::except($data, $record->getTranslatableAttributes()));
 
         foreach (Arr::only($data, $record->getTranslatableAttributes()) as $key => $value) {
-            $record->setTranslation($key, $this->activeFormLocale, $value);
+            $record->setTranslation($key, $this->activeLocale, $value);
         }
 
         $record->save();
@@ -58,21 +58,13 @@ trait Translatable
         return $record;
     }
 
-    public function updatedActiveFormLocale(): void
+    public function updatedActiveLocale(): void
     {
         $this->fillForm();
     }
 
-    public function updatingActiveFormLocale(): void
+    public function updatingActiveLocale(): void
     {
         $this->save(shouldRedirect: false);
-    }
-
-    protected function getActions(): array
-    {
-        return array_merge(
-            [$this->getActiveFormLocaleSelectAction()],
-            parent::getActions(),
-        );
     }
 }

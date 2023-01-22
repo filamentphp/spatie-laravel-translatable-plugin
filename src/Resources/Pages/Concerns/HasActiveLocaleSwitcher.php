@@ -2,19 +2,11 @@
 
 namespace Filament\Resources\Pages\Concerns;
 
-use Filament\Pages\Actions\Action;
-use Filament\Pages\Actions\LocaleSwitcher;
-
 trait HasActiveLocaleSwitcher
 {
     public $activeLocale = null;
 
     public ?array $translatableLocales = null;
-
-    protected function getActiveLocaleSelectAction(): Action
-    {
-        return LocaleSwitcher::make();
-    }
 
     public function setTranslatableLocales(array $locales): void
     {
