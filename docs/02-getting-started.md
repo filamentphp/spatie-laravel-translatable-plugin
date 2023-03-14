@@ -25,6 +25,26 @@ class BlogPostResource extends Resource
 }
 ```
 
+If you have a simple (modal) resource replace `EditAction` with `ManageAction`:
+```php
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                //
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\ManageAction::make()
+            ])
+    }
+
+```
+
+
 You may [publish the package's configuration file](installation#publishing-configuration) to set the `default_locales` for all resources at once.
 
 ## Making resource pages translatable
