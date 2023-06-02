@@ -20,7 +20,7 @@ class SpatieLaravelTranslatablePlugin implements Plugin
 
     public static function make(): static
     {
-        return new static();
+        return app(static::class);
     }
 
     public function getId(): string
@@ -28,12 +28,12 @@ class SpatieLaravelTranslatablePlugin implements Plugin
         return 'spatie-laravel-translatable';
     }
 
-    public function register(Context $context): void
+    public function register(Panel $panel): void
     {
         //
     }
 
-    public function boot(Context $context): void
+    public function boot(Panel $panel): void
     {
         //
     }
