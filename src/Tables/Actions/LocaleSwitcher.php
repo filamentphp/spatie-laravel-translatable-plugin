@@ -1,10 +1,12 @@
 <?php
 
-namespace Filament\Actions;
+namespace Filament\Tables\Actions;
+
+use Filament\Actions\Concerns\HasTranslatableLocaleOptions;
 
 class LocaleSwitcher extends SelectAction
 {
-    use Concerns\HasTranslatableLocaleOptions;
+    use HasTranslatableLocaleOptions;
 
     public static function getDefaultName(): ?string
     {
