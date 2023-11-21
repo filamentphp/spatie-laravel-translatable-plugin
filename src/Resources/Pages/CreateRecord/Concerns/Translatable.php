@@ -114,15 +114,15 @@ trait Translatable
 
         $translatableAttributes = $record->getTranslatableAttributes();
 
+        // Fill non-translatable data
         $record->fill(Arr::except(Arr::first($data), $translatableAttributes));
 
+        // Fill translatable data
         foreach ($data as $locale => $localeData) {
-            if ($locale === $this->activeLocale) {
-                $localeData = Arr::only(
-                    $localeData,
-                    app(static::getModel())->getTranslatableAttributes(),
-                );
-            }
+            $localeData = Arr::only(
+                $localeData,
+                app(static::getModel())->getTranslatableAttributes(),
+            );
 
             foreach ($localeData as $key => $value) {
                 $record->setTranslation($key, $locale, $value);
