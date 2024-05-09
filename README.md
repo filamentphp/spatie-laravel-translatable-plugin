@@ -1,5 +1,13 @@
 # Filament Spatie Translatable Plugin
 
+## Introduction
+
+This repository is a fork of the [Filament Spatie Laravel Translatable plugin](https://github.com/filamentphp/spatie-laravel-translatable-plugin), maintained by [Mohamed Sabil](https://github.com/mohamedsabil83) and [Lara Zeus](https://github.com/lara-zeus).
+
+Our objective is to address existing issues, introduce additional features, and enhance the overall functionality of the plugin. 
+
+We are committed to providing ongoing improvements and welcome contributions and suggestions from the community.
+
 ## Installation
 
 Install the plugin with Composer:
