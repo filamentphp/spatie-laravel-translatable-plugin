@@ -1,0 +1,9 @@
+parameters:
+    level: 1
+    paths:
+        - src
+
+    checkOctaneCompatibility: true
+    checkModelProperties: true
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

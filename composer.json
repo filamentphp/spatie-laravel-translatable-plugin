@@ -1,17 +1,22 @@
 {
-    "name": "filament/spatie-laravel-translatable-plugin",
+    "name": "lara-zeus/translatable",
     "description": "Filament support for `spatie/laravel-translatable`.",
     "license": "MIT",
-    "homepage": "https://github.com/filamentphp/filament",
+    "homepage": "https://github.com/lara-zeus/translatable",
     "support": {
-        "issues": "https://github.com/filamentphp/filament/issues",
-        "source": "https://github.com/filamentphp/filament"
+        "issues": "https://github.com/lara-zeus/translatable/issues",
+        "source": "https://github.com/lara-zeus/translatable"
     },
     "require": {
         "php": "^8.1",
-        "filament/support": "self.version",
-        "illuminate/support": "^10.45|^11.0",
+        "filament/filament": "^3.0",
         "spatie/laravel-translatable": "^6.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^2.0",
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^8.0",
+        "phpstan/extension-installer": "^1.1"
     },
     "autoload": {
         "psr-4": {
@@ -26,7 +31,10 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
