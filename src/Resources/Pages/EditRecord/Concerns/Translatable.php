@@ -36,7 +36,7 @@ trait Translatable
 
         $existingLocales = null;
 
-        foreach ($this->otherLocaleData as $locale => $localeData) {
+        /*foreach ($this->otherLocaleData as $locale => $localeData) {
             $existingLocales ??= collect($translatableAttributes)
                 ->map(fn (string $attribute): array => array_keys($record->getTranslations($attribute)))
                 ->flatten()
@@ -65,7 +65,7 @@ trait Translatable
             foreach (Arr::only($localeData, $translatableAttributes) as $key => $value) {
                 $record->setTranslation($key, $locale, $value);
             }
-        }
+        }*/
 
         $this->data = $originalData;
 
