@@ -18,6 +18,7 @@ class SpatieLaravelTranslatableContentDriver implements TranslatableContentDrive
 
     public function isAttributeTranslatable(string $model, string $attribute): bool
     {
+        /** @var Model $model */
         $model = app($model);
 
         if (! method_exists($model, 'isTranslatableAttribute')) {
@@ -42,6 +43,7 @@ class SpatieLaravelTranslatableContentDriver implements TranslatableContentDrive
             $record->getTranslatableAttributes() :
             [];
 
+        /** @var Model $record */
         $record->fill(Arr::except($data, $translatableAttributes));
 
         if (method_exists($record, 'setTranslation')) {
