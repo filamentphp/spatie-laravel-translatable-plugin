@@ -7,10 +7,7 @@ use Filament\Contracts\Plugin;
 
 class SpatieLaravelTranslatablePlugin implements Plugin
 {
-    /**
-     * @var array<string>
-     */
-    protected array $defaultLocales = [];
+    protected ?array $defaultLocales = [];
 
     protected ?Closure $getLocaleLabelUsing = null;
 
@@ -38,17 +35,11 @@ class SpatieLaravelTranslatablePlugin implements Plugin
         //
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getDefaultLocales(): array
+    public function getDefaultLocales(): ?array
     {
         return $this->defaultLocales;
     }
 
-    /**
-     * @param  array<string> | null  $defaultLocales
-     */
     public function defaultLocales(?array $defaultLocales = null): static
     {
         $this->defaultLocales = $defaultLocales;
