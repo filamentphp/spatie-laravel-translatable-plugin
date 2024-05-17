@@ -10,7 +10,24 @@ We are committed to providing ongoing improvements and welcome contributions and
 
 ## Installation
 
-Install the plugin with Composer:
+First add this repo URL to your composer:
+
+```json
+"repositories": [
+    {
+        "type": "github",
+        "url": "https://github.com/lara-zeus/translatable"
+    },
+]
+```
+
+and make sure your minimum stability is set to dev:
+
+```json
+"minimum-stability": "dev",
+```
+
+Then Install the plugin with Composer:
 
 ```bash
 composer require filament/spatie-laravel-translatable-plugin:"^3.2" -W
