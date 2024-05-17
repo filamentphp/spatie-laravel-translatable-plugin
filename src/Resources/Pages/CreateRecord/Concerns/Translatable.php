@@ -49,6 +49,7 @@ trait Translatable
                 ...$this->data,
                 ...$localeData,
             ];
+
             try {
                 $this->form->fill($this->data);
                 $this->form->validate();
