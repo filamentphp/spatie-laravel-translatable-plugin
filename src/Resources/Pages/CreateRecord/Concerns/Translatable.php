@@ -34,13 +34,15 @@ trait Translatable
 
         $translatableAttributes = static::getResource()::getTranslatableAttributes();
 
-        $record->fill(Arr::except($data, $translatableAttributes));
+        $record->fill(
+            Arr::except($data, $translatableAttributes)
+        );
 
         foreach (Arr::only($data, $translatableAttributes) as $key => $value) {
             $record->setTranslation($key, $this->activeLocale, $value);
         }
 
-        $originalData = $this->data;
+        $originalData = $data;
 
         foreach ($this->otherLocaleData as $locale => $localeData) {
             $this->data = [
@@ -49,6 +51,7 @@ trait Translatable
             ];
 
             try {
+                $this->form->fill($this->data);
                 $this->form->validate();
             } catch (ValidationException $exception) {
                 continue;
@@ -61,7 +64,7 @@ trait Translatable
             }
         }
 
-        $this->data = $originalData;
+        $data = $originalData;
 
         if (
             static::getResource()::isScopedToTenant() &&
@@ -90,13 +93,24 @@ trait Translatable
 
         $translatableAttributes = static::getResource()::getTranslatableAttributes();
 
-        $this->otherLocaleData[$this->oldActiveLocale] = Arr::only($this->data, $translatableAttributes);
+        // Form::getState triggers the dehydrate hooks of the fields
+        // the before hooks are skipped to allow relationships to be translated
+        // without making it a hassle
+        $state = $this->form->getState();
+        $this->otherLocaleData[$this->oldActiveLocale] = Arr::only($state, $translatableAttributes);
 
-        $this->data = [
-            ...Arr::except($this->data, $translatableAttributes),
-            ...$this->otherLocaleData[$this->activeLocale] ?? [],
-        ];
+        try {
+            // Form::fill triggers the hydrate hooks of the fields
+            $this->form->fill([
+                ...Arr::except($state, $translatableAttributes),
+                ...$this->otherLocaleData[$this->activeLocale] ?? [],
+            ]);
 
-        unset($this->otherLocaleData[$this->activeLocale]);
+            unset($this->otherLocaleData[$this->activeLocale]);
+        } catch (ValidationException $e) {
+            $this->activeLocale = $this->oldActiveLocale;
+
+            throw $e;
+        }
     }
 }
