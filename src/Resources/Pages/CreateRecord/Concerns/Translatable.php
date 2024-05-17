@@ -34,23 +34,23 @@ trait Translatable
 
         $translatableAttributes = static::getResource()::getTranslatableAttributes();
 
-        $record->fill(Arr::except($data, $translatableAttributes));
+        $record->fill(
+            Arr::except($data, $translatableAttributes)
+        );
 
         foreach (Arr::only($data, $translatableAttributes) as $key => $value) {
             $record->setTranslation($key, $this->activeLocale, $value);
         }
 
-        $originalData = $this->data;
+        $originalData = $data;
 
-        /*foreach ($this->otherLocaleData as $locale => $localeData) {
+        foreach ($this->otherLocaleData as $locale => $localeData) {
             $this->data = [
                 ...$this->data,
                 ...$localeData,
             ];
-
-            $this->form->validate();
-
             try {
+                $this->form->fill($this->data);
                 $this->form->validate();
             } catch (ValidationException $exception) {
                 continue;
@@ -61,9 +61,9 @@ trait Translatable
             foreach (Arr::only($localeData, $translatableAttributes) as $key => $value) {
                 $record->setTranslation($key, $locale, $value);
             }
-        }*/
+        }
 
-        $this->data = $originalData;
+        $data = $originalData;
 
         if (
             static::getResource()::isScopedToTenant() &&
@@ -71,8 +71,6 @@ trait Translatable
         ) {
             return $this->associateRecordWithTenant($record, $tenant);
         }
-
-        //dd(11,$record);
 
         $record->save();
 
@@ -97,8 +95,7 @@ trait Translatable
         // Form::getState triggers the dehydrate hooks of the fields
         // the before hooks are skipped to allow relationships to be translated
         // without making it a hassle
-        $state = $this->form->getRawState(false);
-
+        $state = $this->form->getState();
         $this->otherLocaleData[$this->oldActiveLocale] = Arr::only($state, $translatableAttributes);
 
         try {
