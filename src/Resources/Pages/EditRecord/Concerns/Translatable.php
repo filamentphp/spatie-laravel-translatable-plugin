@@ -26,7 +26,9 @@ trait Translatable
     {
         $translatableAttributes = static::getResource()::getTranslatableAttributes();
 
-        $record->fill(Arr::except($data, $translatableAttributes));
+        $record->fill(
+            Arr::except($data, $translatableAttributes)
+        );
 
         foreach (Arr::only($data, $translatableAttributes) as $key => $value) {
             $record->setTranslation($key, $this->activeLocale, $value);
@@ -40,7 +42,7 @@ trait Translatable
                 ->all();
 
             try {
-                $this->form->fill($this->data);
+                $this->form->fill($this->form->getState());
                 $this->form->validate();
             } catch (ValidationException $exception) {
                 if (! array_key_exists($locale, $existingLocales)) {
@@ -79,16 +81,12 @@ trait Translatable
 
         $translatableAttributes = static::getResource()::getTranslatableAttributes();
 
-        // Form::getState triggers the dehydrate hooks of the fields
-        // the before hooks are skipped to allow relationships to be translated
-        // without making it a hassle
         $state = $this->form->getState();
         $this->otherLocaleData[$this->oldActiveLocale] = Arr::only($state, $translatableAttributes);
 
         try {
-            // Form::fill triggers the hydrate hooks of the fields
             $this->form->fill([
-                ...Arr::except($state, $translatableAttributes),
+                ...Arr::except($this->form->getRawState(), $translatableAttributes),
                 ...$this->otherLocaleData[$this->activeLocale] ?? [],
             ]);
 
