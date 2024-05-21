@@ -42,7 +42,7 @@ trait Translatable
                 ->all();
 
             try {
-                $this->form->fill($this->form->getState());
+                $this->form->fill($this->form->getState(false));
                 $this->form->validate();
             } catch (ValidationException $exception) {
                 if (! array_key_exists($locale, $existingLocales)) {
@@ -81,12 +81,11 @@ trait Translatable
 
         $translatableAttributes = static::getResource()::getTranslatableAttributes();
 
-        $state = $this->form->getState();
-        $this->otherLocaleData[$this->oldActiveLocale] = Arr::only($state, $translatableAttributes);
+        $this->otherLocaleData[$this->oldActiveLocale] = Arr::only($this->form->getState(), $translatableAttributes);
 
         try {
             $this->form->fill([
-                ...Arr::except($this->form->getRawState(), $translatableAttributes),
+                ...Arr::except($this->form->getState(false), $translatableAttributes),
                 ...$this->otherLocaleData[$this->activeLocale] ?? [],
             ]);
 
