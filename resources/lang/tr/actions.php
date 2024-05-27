@@ -3,7 +3,7 @@
 return [
 
     'active_locale' => [
-        'label' => 'Yerel ayar',
+        'label' => 'Aktif Dil',
     ],
 
 ];
