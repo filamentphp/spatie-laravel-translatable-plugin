@@ -81,7 +81,6 @@ trait Translatable
 
         $translatableAttributes = static::getResource()::getTranslatableAttributes();
 
-
         try {
             $state = $this->form->getState();
             $this->otherLocaleData[$this->oldActiveLocale] = Arr::only($state, $translatableAttributes);
