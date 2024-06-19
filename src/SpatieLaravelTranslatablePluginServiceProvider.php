@@ -10,7 +10,7 @@ class SpatieLaravelTranslatablePluginServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/filament-spatie-laravel-translatable-plugin-translations'),
+                __DIR__ . '/../resources/lang' => lang_path('vendor/filament-spatie-laravel-translatable-plugin-translations'),
             ], 'filament-spatie-laravel-translatable-plugin-translations');
         }
 
