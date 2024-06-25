@@ -1,302 +1,65 @@
-# Filament Spatie Translatable Plugin
+<p align="center">
+<a href="https://larazeus.com"><img src="https://larazeus.com/images/lara-zeus-translatable.png" /></a>
+</p>
+
+<h4 align="center">Lara Zeus Translatable is Filament support for Spatie's Laravel Translatable package.</h4>
+
+## Support Filament
+
+<a href="https://github.com/sponsors/danharrin">
+<img alt="filament-logo" src="https://larazeus.com/images/filament-sponsor-banner.png">
+</a>
 
 ## Introduction
 
 This repository is a fork of the [Filament Spatie Laravel Translatable plugin](https://github.com/filamentphp/spatie-laravel-translatable-plugin), maintained by [Mohamed Sabil](https://github.com/mohamedsabil83) and [Lara Zeus](https://github.com/lara-zeus).
 
-Our objective is to address existing issues, introduce additional features, and enhance the overall functionality of the plugin. 
+Our objective is to address existing issues, introduce additional features, and enhance the overall functionality of the plugin.
 
 We are committed to providing ongoing improvements and welcome contributions and suggestions from the community.
 
-## Installation
+## Features
 
-First add this repo URL to your composer:
+- 🔥 Using Spatie translatable package
+- 🔥 default translatable locales
+- 🔥 Locale Switcher
+- 🔥 Support for create, edit, list and view pages
+- 🔥 Setting the translatable locales for a particular resource
+- 🔥 Translating relation managers
 
-```json
-"repositories": [
-    {
-        "type": "github",
-        "url": "https://github.com/lara-zeus/translatable"
-    },
-]
-```
+## Translatable Pro
 
-and make sure your minimum stability is set to dev:
+[![translatable-pro](https://larazeus.com/images/translatable-pro-ad.png)](https://larazeus.com/translatable-pro)
 
-```json
-"minimum-stability": "dev",
-```
+## Full Documentation
 
-Then Install the plugin with Composer:
+> Visit our website to get the complete documentation: https://larazeus.com/docs/translatable
 
-```bash
-composer require filament/spatie-laravel-translatable-plugin:"^3.2" -W
-```
 
-## Adding the plugin to a panel
+## Changelog
 
-To add a plugin to a panel, you must include it in the configuration file using the `plugin()` method:
+Please see [CHANGELOG](CHANGELOG.md) for more information on recent changes.
 
-```php
-use Filament\SpatieLaravelTranslatablePlugin;
+## Support
+available support channels:
+* open an issue on [GitHub](https://github.com/lara-zeus/translatable/issues)
+* Email us using the [contact center](https://larazeus.com/contact-us)
 
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->plugin(SpatieLaravelTranslatablePlugin::make());
-}
-```
+## Contributing
 
-## Setting the default translatable locales
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-To set up the locales that can be used to translate content, you can pass an array of locales to the `defaultLocales()` plugin method:
+## Security
 
-```php
-use Filament\SpatieLaravelTranslatablePlugin;
+If you find any security-related issues, please email info@larazeus.com instead of using the issue tracker.
 
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->plugin(
-            SpatieLaravelTranslatablePlugin::make()
-                ->defaultLocales(['en', 'es']),
-        );
-}
-```
+## Credits
 
-## Preparing your model class
+-   [php coder](https://github.com/atmonshi)
+-   [Dan Harrin](https://github.com/danharrin)
+-   [Mohamed Sabil](https://github.com/mohamedsabil83)
+-   [All Contributors](../../contributors)
 
-You need to make your model translatable. You can read how to do this in [Spatie's documentation](https://spatie.be/docs/laravel-translatable/installation-setup#content-making-a-model-translatable).
+## License
 
-## Preparing your resource class
-
-You must apply the `Filament\Resources\Concerns\Translatable` trait to your resource class:
-
-```php
-use Filament\Resources\Concerns\Translatable;
-use Filament\Resources\Resource;
-
-class BlogPostResource extends Resource
-{
-    use Translatable;
-    
-    // ...
-}
-```
-
-## Making resource pages translatable
-
-After [preparing your resource class](#preparing-your-resource-class), you must make each of your resource's pages translatable too. You can find your resource's pages in the `Pages` directory of each resource folder. To prepare a page, you must apply the corresponding `Translatable` trait to it, and install a `LocaleSwitcher` header action:
-
-```php
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
-
-class ListBlogPosts extends ListRecords
-{
-    use ListRecords\Concerns\Translatable;
-    
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\LocaleSwitcher::make(),
-            // ...
-        ];
-    }
-    
-    // ...
-}
-```
-
-```php
-use Filament\Actions;
-use Filament\Resources\Pages\CreateRecord;
-
-class CreateBlogPost extends CreateRecord
-{
-    use CreateRecord\Concerns\Translatable;
-    
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\LocaleSwitcher::make(),
-            // ...
-        ];
-    }
-    
-    // ...
-}
-```
-
-```php
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
-
-class EditBlogPost extends EditRecord
-{
-    use EditRecord\Concerns\Translatable;
-    
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\LocaleSwitcher::make(),
-            // ...
-        ];
-    }
-    
-    // ...
-}
-```
-
-And if you have a `ViewRecord` page for your resource:
-
-```php
-use Filament\Actions;
-use Filament\Resources\Pages\ViewRecord;
-
-class ViewBlogPost extends ViewRecord
-{
-    use ViewRecord\Concerns\Translatable;
-    
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\LocaleSwitcher::make(),
-            // ...
-        ];
-    }
-    
-    // ...
-}
-```
-
-If you're using a simple resource, you can make the `ManageRecords` page translatable instead:
-
-```php
-use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
-
-class ManageBlogPosts extends ListRecords
-{
-    use ManageRecords\Concerns\Translatable;
-    
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\LocaleSwitcher::make(),
-            // ...
-        ];
-    }
-    
-    // ...
-}
-```
-
-### Setting the translatable locales for a particular resource
-
-By default, the translatable locales can be [set globally for all resources in the plugin configuration](#setting-the-default-translatable-locales). Alternatively, you can customize the translatable locales for a particular resource by overriding the `getTranslatableLocales()` method in your resource class:
-
-```php
-use Filament\Resources\Concerns\Translatable;
-use Filament\Resources\Resource;
-
-class BlogPostResource extends Resource
-{
-    use Translatable;
-    
-    // ...
-    
-    public static function getTranslatableLocales(): array
-    {
-        return ['en', 'fr'];
-    }
-}
-```
-
-## Translating relation managers
-
-First, you must apply the `Filament\Resources\RelationManagers\Concerns\Translatable` trait to the relation manager class:
-
-```php
-use Filament\Resources\RelationManagers\Concerns\Translatable;
-use Filament\Resources\RelationManagers\RelationManager;
-
-class BlogPostsRelationManager extends RelationManager
-{
-    use Translatable;
-    
-    // ...
-}
-```
-
-Now, you can add a new `LocaleSwitcher` action to the header of the relation manager's `table()`:
-
-```php
-use Filament\Tables;
-use Filament\Tables\Table;
-
-public function table(Table $table): Table
-{
-    return $table
-        ->columns([
-            // ...
-        ])
-        ->headerActions([
-            // ...
-            Tables\Actions\LocaleSwitcher::make(),
-        ]);
-}
-```
-
-### Inheriting the relation manager's active locale from the resource page
-
-If you wish to reactively inherit the locale of the `Translatable` resource page that the relation manager is being displayed on, you can override the `$activeLocale` property and add Livewire's `Reactive` attribute to it:
-
-```php
-use Filament\Resources\RelationManagers\Concerns\Translatable;
-use Filament\Resources\RelationManagers\RelationManager;
-use Livewire\Attributes\Reactive;
-
-class BlogPostsRelationManager extends RelationManager
-{
-    use Translatable;
-    
-    #[Reactive]
-    public ?string $activeLocale = null;
-    
-    // ...
-}
-```
-
-If you do this, you no longer need a `LocaleSwitcher` action in the `table()`.
-
-### Setting the translatable locales for a particular relation manager
-
-By default, the translatable locales can be [set globally for all relation managers in the plugin configuration](#setting-the-default-translatable-locales). Alternatively, you can customize the translatable locales for a particular relation manager by overriding the `getTranslatableLocales()` method in your relation manager class:
-
-```php
-use Filament\Resources\RelationManagers\Concerns\Translatable;
-use Filament\Resources\RelationManagers\RelationManager;
-
-class BlogPostsRelationManager extends RelationManager
-{
-    use Translatable;
-    
-    // ...
-    
-    public function getTranslatableLocales(): array
-    {
-        return ['en', 'fr'];
-    }
-}
-```
-
-## Publishing translations
-
-If you wish to translate the package, you may publish the language files using:
-
-```bash
-php artisan vendor:publish --tag=filament-spatie-laravel-translatable-plugin-translations
-```
+The MIT License (MIT). Please have a look at [License File](LICENSE.md) for more information.
