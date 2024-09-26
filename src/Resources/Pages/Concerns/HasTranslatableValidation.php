@@ -2,6 +2,8 @@
 
 namespace Filament\Resources\Pages\Concerns;
 
+use Filament\Forms\Components\Contracts\HasValidationRules;
+
 trait HasTranslatableValidation
 {
     /**
@@ -9,7 +11,10 @@ trait HasTranslatableValidation
      */
     public function setLocaleByRules(string $locale): void
     {
-        $components = $this->form->getComponents();
+        $components = array_filter(
+            $this->form->getFlatComponents(),
+            fn ($component) => $component instanceof HasValidationRules
+        );
 
         foreach ($components as $component) {
             $rules = $component->getValidationRules();

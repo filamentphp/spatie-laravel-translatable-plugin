@@ -3,6 +3,7 @@
 namespace Filament\Resources\Pages\CreateRecord\Concerns;
 
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Contracts\HasValidationRules;
 use Filament\Resources\Concerns\HasActiveLocaleSwitcher;
 use Filament\Resources\Pages\Concerns\HasTranslatableValidation;
 use Illuminate\Database\Eloquent\Model;
@@ -37,12 +38,14 @@ trait Translatable
          * an empty form state must be created for each local.
          */
         if (empty($this->otherLocaleData)) {
-            $components = $this->form->getComponents();
+            $components = $this->form->getFlatComponents();
             $formData = collect($components)
+                ->filter(
+                    fn ($component) => $component instanceof HasValidationRules
+                )
                 ->mapWithKeys(
-                    fn ($component) => [
-                        $component->getName() => null,
-                    ])
+                    fn ($component) => [$component->getName() => null]
+                )
                 ->toArray();
             foreach ($this->getTranslatableLocales() as $locale) {
                 $this->otherLocaleData[$locale] = [];
