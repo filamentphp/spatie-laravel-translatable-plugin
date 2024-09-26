@@ -5,6 +5,7 @@ namespace Filament\Resources\Pages\EditRecord\Concerns;
 use Filament\Resources\Concerns\HasActiveLocaleSwitcher;
 use Filament\Resources\Pages\Concerns\HasTranslatableFormWithExistingRecordData;
 use Filament\Resources\Pages\Concerns\HasTranslatableRecord;
+use Filament\Resources\Pages\Concerns\HasTranslatableValidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -14,6 +15,7 @@ trait Translatable
     use HasActiveLocaleSwitcher;
     use HasTranslatableFormWithExistingRecordData;
     use HasTranslatableRecord;
+    use HasTranslatableValidation;
 
     protected ?string $oldActiveLocale = null;
 
@@ -34,9 +36,19 @@ trait Translatable
 
         $originalData = $this->data;
 
+        /**
+         * Set the data for the active locale.
+         */
+        $this->otherLocaleData[$this->activeLocale] = Arr::only($this->data, $translatableAttributes);
+
         $existingLocales = null;
 
         foreach ($this->otherLocaleData as $locale => $localeData) {
+            /**
+             * Set the locale for the validation rules.
+             */
+            $this->setLocaleByRules($locale);
+
             $existingLocales ??= collect($translatableAttributes)
                 ->map(fn (string $attribute): array => array_keys($record->getTranslations($attribute)))
                 ->flatten()
@@ -51,7 +63,7 @@ trait Translatable
             try {
                 $this->form->validate();
             } catch (ValidationException $exception) {
-                if (! array_key_exists($locale, $existingLocales)) {
+                if (! in_array($locale, $existingLocales, true)) {
                     continue;
                 }
 
