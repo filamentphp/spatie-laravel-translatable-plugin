@@ -275,3 +275,39 @@ If you wish to translate the package, you may publish the language files using:
 ```bash
 php artisan vendor:publish --tag=filament-spatie-laravel-translatable-plugin-translations
 ```
+
+## Form Validation
+
+You can define and use form validation rules according to the locale as follows.
+
+```php
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('name')
+                ->label(__('Category Name'))
+                ->helperText(__('This is the name of the category.'))
+                ->rules(function (?Category $record) {
+                    return [
+                        'tr' => [
+                            'required', 
+                            'string', 
+                            'max:100', 
+                            Rule::unique('tags', 'name->tr')
+                                ->where('type', 'category')
+                                ->ignore($record?->id, 'id')
+                        ],
+                        'en' => [
+                            'required', 
+                            'string', 
+                            'max:100', 
+                            Rule::unique('tags', 'name->en')
+                                ->where('type', 'category')
+                                ->ignore($record?->id, 'id')
+                        ],
+                    ];
+                })
+        ]);
+}
+```
