@@ -1,6 +1,5 @@
 > [!IMPORTANT]
-> This plugin is not maintained by LaraZeus: https://github.com/lara-zeus/translatable
-
+> This plugin is now maintained by Lara Zeus: https://github.com/lara-zeus/translatable
 
 # Filament Spatie Translatable Plugin
 
@@ -11,7 +10,7 @@ Install the plugin with Composer:
 ```bash
 composer require filament/spatie-laravel-translatable-plugin:"^3.2" -W
 ```
-as
+
 ## Adding the plugin to a panel
 
 To add a plugin to a panel, you must include it in the configuration file using the `plugin()` method:
