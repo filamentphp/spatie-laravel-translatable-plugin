@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This plugin is now maintained by Lara Zeus: https://github.com/lara-zeus/translatable
+
 # Filament Spatie Translatable Plugin
 
 ## Installation
